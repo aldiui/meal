@@ -173,7 +173,7 @@ class Sales_menu extends CI_Controller {
                 'qty_akhir' => (int) $qtyawl[$key] - (int) $qtypki[$key],
             ];
         }
-        $ceklpengeluaran = $this->db->get_where("lap_pengeluaran", ["tanggal" => $tanggal, "user_id" => $id ])->num_rows();
+        $ceklpengeluaran = $this->db->get_where("lap_pengeluaran", ["tanggal" => $tanggal, "user_id" => $id_user ])->num_rows();
         if($ceklpengeluaran > 0){
             $akun_id = $this->input->post("akun_id");
             $keterangan = $this->input->post("keterangan");

@@ -64,15 +64,17 @@ class Sales_menu extends CI_Controller
         $sales_penjualan = [];
         $no_bukti = $this->input->post("no_bukti");
         foreach ($barang_id as $key => $value) {
-            $sales_penjualan[] = [
-                'tanggal' => $tanggal,
-                'barang_id' => $value,
-                'sediaan_id' => $sediaan_id[$key],
-                'qty_pemakaian' => $qty_pemakaian[$key],
-                'total' => $total[$key],
-                'user_id' => $id_user,
-                'no_bukti' => $no_bukti,
-            ];
+            if (!empty($total[$key])) {
+                $sales_penjualan[] = [
+                    'tanggal' => $tanggal,
+                    'barang_id' => $barang_id[$key],
+                    'sediaan_id' => $sediaan_id[$key],
+                    'qty_pemakaian' => $qty_pemakaian[$key],
+                    'total' => $total[$key],
+                    'user_id' => $id_user,
+                    'no_bukti' => $no_bukti,
+                ];
+            }
         }
         $sediaan = $this->input->post("sediaan");
         $qtyawl = $this->input->post("qtyawl");
@@ -95,19 +97,23 @@ class Sales_menu extends CI_Controller
         $jumlah = $this->input->post("jumlah");
         $lap_pengeluaran = [];
         foreach ($akun_id as $key => $value) {
-            $lap_pengeluaran[] = [
-                'akun_id' => $akun_id[$key],
-                'tanggal' => $tanggal,
-                'keterangan' => $keterangan[$key],
-                'jumlah' => $jumlah[$key],
-                'nilai' => $nilai[$key],
-                'user_id' => $id_user,
-                'no_bukti' => $no_bukti,
-            ];
+            if (!empty($nilai[$key])) {
+                $lap_pengeluaran[] = [
+                    'akun_id' => $akun_id[$key],
+                    'tanggal' => $tanggal,
+                    'keterangan' => $keterangan[$key],
+                    'nilai' => $nilai[$key],
+                    'user_id' => $id_user,
+                    'no_bukti' => $no_bukti,
+                    'jumlah' => $jumlah[$key],
+                ];
+            }
         }
         $this->db->insert_batch('sales_laporan', $sales_penjualan);
         $this->db->insert_batch('sediaan_laporan', $sediaan_penjualan);
-        $this->db->insert_batch('lap_pengeluaran', $lap_pengeluaran);
+        if(!empty($lap_pengeluaran)){
+            $this->db->insert_batch('lap_pengeluaran', $lap_pengeluaran);
+        }
         $this->session->set_flashdata('pesan', '
 		<div class="alert alert-success border-0 bg-success alert-dismissible fade show">
 			<div class="text-white">Berhasil Menambahkan Data Sales Menu</div>
@@ -144,23 +150,27 @@ class Sales_menu extends CI_Controller
                 'qty_akhir' => (int) $qtyawl[$key] - (int) $qtypki[$key],
             ];
         }
-        $akun_id = $this->input->post("akun_id");
-        $keterangan = $this->input->post("keterangan");
-        $nilai = $this->input->post("nilai");
-        $jumlah = $this->input->post("jumlah");
-        $lap_pengeluaran = [];
-        foreach ($akun_id as $key => $value) {
-            $lap_pengeluaran[] = [
-                'id_pengeluaran' => $akun_id[$key],
-                'keterangan' => $keterangan[$key],
-                'jumlah' => $jumlah[$key],
-                'nilai' => $nilai[$key],
-            ];
-        }
+        $ceklpengeluaran = $this->db->get_where("lap_pengeluaran", ["tanggal" => $tanggal, "user_id" => $id_user ])->num_rows();
+        if($ceklpengeluaran > 0){
+            $akun_id = $this->input->post("akun_id");
+            $keterangan = $this->input->post("keterangan");
+            $jumlah = $this->input->post("jumlah");
+            $nilai = $this->input->post("nilai");
+            $lap_pengeluaran = [];
+            foreach ($akun_id as $key => $value) {
+                $lap_pengeluaran[] = [
+                    'id_pengeluaran' => $akun_id[$key],
+                    'keterangan' => $keterangan[$key],
+                    'nilai' => $nilai[$key],
+                    'jumlah' => $jumlah[$key],
+                ];
+            }
+            $this->db->where(['user_id' => $id_user, 'tanggal' => $tanggal ]);
+            $this->db->update_batch('lap_pengeluaran', $lap_pengeluaran, 'id_pengeluaran');
+        } 
         $this->db->where(['user_id' => $id_user, 'tanggal' => $tanggal ]);
         $this->db->update_batch('sales_laporan', $sales_penjualan, 'barang_id');
         $this->db->update_batch('sediaan_laporan', $sediaan_penjualan, 'id_sad');
-        $this->db->update_batch('lap_pengeluaran', $lap_pengeluaran, 'id_pengeluaran');
         $this->session->set_flashdata('pesan', '
 		<div class="alert alert-success border-0 bg-success alert-dismissible fade show">
 			<div class="text-white">Berhasil Mengedit Data Sales Menu</div>
@@ -216,9 +226,8 @@ class Sales_menu extends CI_Controller
         layout1("sales/tambah_rolling", $data);
     }
 
-    public function tambah_rs($tanggal, $id)
-    {
-        $nickname =  $this->session->userdata('nickname');
+    public function tambah_rs($tanggal, $id){
+		$nickname =  $this->session->userdata('nickname');
         $user = $this->db->get_where("master_user", ["username" => $nickname])->row_array();
         $id_user = $id;
         $rolling_id = $user["id"];
@@ -229,16 +238,18 @@ class Sales_menu extends CI_Controller
         $no_bukti = $this->input->post("no_bukti");
         $sales_penjualan = [];
         foreach ($barang_id as $key => $value) {
-            $sales_penjualan[] = [
-                'tanggal' => $tanggal,
-                'barang_id' => $barang_id[$key],
-                'sediaan_id' => $sediaan_id[$key],
-                'qty_pemakaian' => $qty_pemakaian[$key],
-                'total' => $total[$key],
-                'user_id' => $id_user,
-                'rolling' => $rolling_id,
-                'no_bukti' => $no_bukti,
-            ];
+            if (!empty($total[$key])) {
+                $sales_penjualan[] = [
+                    'tanggal' => $tanggal,
+                    'barang_id' => $barang_id[$key],
+                    'sediaan_id' => $sediaan_id[$key],
+                    'qty_pemakaian' => $qty_pemakaian[$key],
+                    'total' => $total[$key],
+                    'user_id' => $id_user,
+                    'rolling' => $rolling_id,
+                    'no_bukti' => $no_bukti,
+                ];
+            }
         }
         $sediaan = $this->input->post("sediaan");
         $qtyawl = $this->input->post("qtyawl");
@@ -261,31 +272,34 @@ class Sales_menu extends CI_Controller
         $nilai = $this->input->post("nilai");
         $lap_pengeluaran = [];
         foreach ($akun_id as $key => $value) {
-            $lap_pengeluaran[] = [
-                'akun_id' => $akun_id[$key],
-                'tanggal' => $tanggal,
-                'keterangan' => $keterangan[$key],
-                'nilai' => $nilai[$key],
-                'user_id' => $id_user,
-                'rolling' => $rolling_id,
-                'no_bukti' => $no_bukti,
-                'jumlah' => $jumlah[$key],
-            ];
+            if (!empty($nilai[$key])) {
+                $lap_pengeluaran[] = [
+                    'akun_id' => $akun_id[$key],
+                    'tanggal' => $tanggal,
+                    'keterangan' => $keterangan[$key],
+                    'nilai' => $nilai[$key],
+                    'user_id' => $id_user,
+                    'rolling' => $rolling_id,
+                    'no_bukti' => $no_bukti,
+                    'jumlah' => $jumlah[$key],
+                ];
+            }
         }
         $this->db->insert_batch('sales_laporan', $sales_penjualan);
         $this->db->insert_batch('sediaan_laporan', $sediaan_penjualan);
-        $this->db->insert_batch('lap_pengeluaran', $lap_pengeluaran);
+        if(!empty($lap_pengeluaran)){
+            $this->db->insert_batch('lap_pengeluaran', $lap_pengeluaran);
+        }
         $this->session->set_flashdata('pesan', '
 		<div class="alert alert-success border-0 bg-success alert-dismissible fade show">
 			<div class="text-white">Berhasil Menambahkan Data Sales Menu</div>
 			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>');
-        redirect('sales/sales_menu/rolling_sales?tanggal='.$tanggal."&id=".$id);
-    }
+		redirect('sales/sales_menu/rolling_sales?tanggal='.$tanggal."&id=".$id);
+	}
 
-    public function edit_rs($tanggal, $id)
-    {
-        $nickname =  $this->session->userdata('nickname');
+	public function edit_rs($tanggal, $id){
+		$nickname =  $this->session->userdata('nickname');
         $user = $this->db->get_where("master_user", ["username" => $nickname])->row_array();
         $id_user = $id;
         $rolling_id = $user["id"];
@@ -298,7 +312,6 @@ class Sales_menu extends CI_Controller
                 'barang_id' => $barang_id[$key],
                 'qty_pemakaian' => $qty_pemakaian[$key],
                 'total' => $total[$key],
-                'rolling' => $rolling_id,
             ];
         }
         $sediaan = $this->input->post("sediaan");
@@ -313,29 +326,32 @@ class Sales_menu extends CI_Controller
                 'qty_akhir' => (int) $qtyawl[$key] - (int) $qtypki[$key],
             ];
         }
-        $akun_id = $this->input->post("akun_id");
-        $keterangan = $this->input->post("keterangan");
-        $jumlah = $this->input->post("jumlah");
-        $nilai = $this->input->post("nilai");
-        $lap_pengeluaran = [];
-        foreach ($akun_id as $key => $value) {
-            $lap_pengeluaran[] = [
-                'id_pengeluaran' => $akun_id[$key],
-                'keterangan' => $keterangan[$key],
-                'nilai' => $nilai[$key],
-                'rolling' => $rolling_id,
-                'jumlah' => $jumlah[$key],
-            ];
-        }
+        $ceklpengeluaran = $this->db->get_where("lap_pengeluaran", ["tanggal" => $tanggal, "user_id" => $id ])->num_rows();
+        if($ceklpengeluaran > 0){
+            $akun_id = $this->input->post("akun_id");
+            $keterangan = $this->input->post("keterangan");
+            $jumlah = $this->input->post("jumlah");
+            $nilai = $this->input->post("nilai");
+            $lap_pengeluaran = [];
+            foreach ($akun_id as $key => $value) {
+                $lap_pengeluaran[] = [
+                    'id_pengeluaran' => $akun_id[$key],
+                    'keterangan' => $keterangan[$key],
+                    'nilai' => $nilai[$key],
+                    'jumlah' => $jumlah[$key],
+                ];
+            }
+            $this->db->where(['user_id' => $id_user, 'tanggal' => $tanggal ]);
+            $this->db->update_batch('lap_pengeluaran', $lap_pengeluaran, 'id_pengeluaran');
+        } 
         $this->db->where(['user_id' => $id_user, 'tanggal' => $tanggal ]);
         $this->db->update_batch('sales_laporan', $sales_penjualan, 'barang_id');
         $this->db->update_batch('sediaan_laporan', $sediaan_penjualan, 'id_sad');
-        $this->db->update_batch('lap_pengeluaran', $lap_pengeluaran, 'id_pengeluaran');
         $this->session->set_flashdata('pesan', '
 		<div class="alert alert-success border-0 bg-success alert-dismissible fade show">
 			<div class="text-white">Berhasil Mengedit Data Sales Menu</div>
 			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>');
-        redirect('sales/sales_menu/rolling_sales?tanggal='.$tanggal."&id=".$id);
-    }
+		redirect('sales/sales_menu/rolling_sales?tanggal='.$tanggal."&id=".$id);
+	}
 }

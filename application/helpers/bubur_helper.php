@@ -60,7 +60,12 @@ function getOutlet3($id){
 
 function getTotalPembiayaan($tanggal, $id){
     $ci = get_instance();
-    $totalPembiayaan = $ci->db->select_sum('nilai')->where(['tanggal' => $tanggal ,'user_id' => $id ])->get('lap_pengeluaran')->row()->nilai;
+    $cek = $ci->db->get_where('lap_pengeluaran', ['tanggal' => $tanggal ,'user_id' => $id ])->num_rows();
+    if($cek > 0){
+        $totalPembiayaan = $ci->db->select_sum('nilai')->where(['tanggal' => $tanggal ,'user_id' => $id ])->get('lap_pengeluaran')->row()->nilai;
+    } else {
+        $totalPembiayaan = 0;
+    }
     return $totalPembiayaan;
 }
 
