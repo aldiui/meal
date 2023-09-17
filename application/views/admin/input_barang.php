@@ -9,61 +9,65 @@ input[type=number] {
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item">
-                        <a href="<?= base_url("admin/dashboard");?>"><i class="bx bx-home-alt"></i></a>
+                        <a href="<?php echo base_url('admin/dashboard'); ?>"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page"><?= $title;?></li>
+                    <li class="breadcrumb-item active" aria-current="page"><?php echo $title; ?></li>
                 </ol>
             </nav>
         </div>
         <div class="col-12">
-            <?= $this->session->flashdata('pesan'); ?>
+            <?php echo $this->session->flashdata('pesan'); ?>
         </div>
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <?= $title;?> Dapur
+                        <?php echo $title; ?> Dapur
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="<?= base_url("admin/dapur_menu/rolling_dapur");?>" method="get">
+                    <form action="<?php echo base_url('admin/dapur_menu/rolling_dapur'); ?>" method="get">
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group mb-2">
                                     <label for="date" class="form-label">Tanggal</label>
-                                    <input class="result form-control" type="text" value="<?= @$date ?>" id="date"
+                                    <input class="result form-control" type="text" value="<?php echo @$date; ?>" id="date"
                                         placeholder="Tanggal..." name="tanggal"
-                                        <?php if($olah != "kosong"){ echo "readonly";} ?>>
-                                    <input type="hidden" value="<?= $username["id"] ?>" name="id">
+                                        <?php if ($olah != 'kosong') {
+                                            echo 'readonly';
+                                        } ?>>
+                                    <input type="hidden" value="<?php echo $username['id']; ?>" name="id">
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group mb-2">
                                     <label for="trx" class="form-label">Transaksi</label>
                                     <input class="form-control" type="number" id="trx" style="text-align: left"
-                                        value="<?php if($olah != "kosong"){ echo $trx;} ?>" name="trx" readonly>
+                                        value="<?php if ($olah != 'kosong') {
+                                            echo $trx;
+                                        } ?>" name="trx" readonly>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group mb-2">
                                     <label for="dpr" class="form-label">Dapur</label>
-                                    <input class="form-control" type="text" value="<?= $username["username"] ?>"
+                                    <input class="form-control" type="text" value="<?php echo $username['username']; ?>"
                                         readonly>
                                 </div>
                             </div>
                         </div>
-                        <?php  if($olah == "kosong"):?>
+                        <?php if ($olah == 'kosong') { ?>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Mulai</button>
                         </div>
-                        <?php  endif;?>
+                        <?php }?>
                     </form>
                 </div>
             </div>
         </div>
-        <?php if($olah == "input"):?>
-        <form action="<?= base_url("admin/dapur_menu/tambah/").@$date."/".$username["id"]."/".$trx ;?>" method="post">
-            <input type="hidden" name="no_dok" value="<?= $no_dok;?>">
+        <?php if ($olah == 'input') { ?>
+        <form action="<?php echo base_url('admin/dapur_menu/tambah/').@$date.'/'.$username['id'].'/'.$trx; ?>" method="post">
+            <input type="hidden" name="no_dok" value="<?php echo $no_dok; ?>">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
@@ -84,14 +88,14 @@ input[type=number] {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php 
-                                        foreach($biaya_rutin as $br):?>
+                                    <?php
+                                        foreach ($biaya_rutin as $br) { ?>
                                     <tr>
-                                        <td><?= $br["kode_biaya"];?></td>
-                                        <td><?= $br["nama_biaya"];?></td>
+                                        <td><?php echo $br['kode_biaya']; ?></td>
+                                        <td><?php echo $br['nama_biaya']; ?></td>
                                         <td width="25%">
                                             <input type="hidden" class="form-control" name="biaya_br[]" readonly
-                                                value="<?= $br["id_biaya"];?>">
+                                                value="<?php echo $br['id_biaya']; ?>">
                                             <input type="text" class="form-control" name="ket_br[]">
                                         </td>
                                         <td width="20%"><input type="number" class="form-control" name="jumlah_br[]">
@@ -99,7 +103,7 @@ input[type=number] {
                                         <td width="20%"><input type="number" class="form-control grandbr"
                                                 oninput="HitungTotalBr()" name="nilai_br[]"></td>
                                     </tr>
-                                    <?php endforeach;?>
+                                    <?php }?>
                                 </tbody>
                                 <tfoot>
                                     <tr>
@@ -142,31 +146,31 @@ input[type=number] {
                             </table>
                             <table class="table table-bordered table-striped my-0 pt-0 w-100" style="width: 100%;">
                                 <tbody style="width: 100%;">
-                                    <?php 
-                                        foreach($biaya_lain as $bl):?>
-                                    <tr class="d-none w-100" id="trbl<?= $bl['id_biaya']; ?>" style="width: 100%;">
+                                    <?php
+                                        foreach ($biaya_lain as $bl) { ?>
+                                    <tr class="d-none w-100" id="trbl<?php echo $bl['id_biaya']; ?>" style="width: 100%;">
                                         <td width="10%">
                                             <span class="d-none"><input type="checkbox"
-                                                    id="cb_bl<?= $bl['id_biaya']; ?>" name="biaya_bl[]"
-                                                    value="<?= $bl['id_biaya']; ?>"></span>
+                                                    id="cb_bl<?php echo $bl['id_biaya']; ?>" name="biaya_bl[]"
+                                                    value="<?php echo $bl['id_biaya']; ?>"></span>
                                             <button type="button" class="btn btn-danger btn-sm"
-                                                onclick="hpsbl(<?= $bl['id_biaya']?>)"><i
+                                                onclick="hpsbl(<?php echo $bl['id_biaya']; ?>)"><i
                                                     class="bx bx-trash"></i></button>
-                                            <?= $bl["kode_biaya"];?>
+                                            <?php echo $bl['kode_biaya']; ?>
                                         </td>
-                                        <td width="25%"><?= $bl["nama_biaya"];?></td>
+                                        <td width="25%"><?php echo $bl['nama_biaya']; ?></td>
                                         <td width="25%">
-                                            <input type="text" class="form-control input_bl<?= $bl['id_biaya']; ?>"
-                                                name="ket_bl<?= $bl['id_biaya']; ?>">
+                                            <input type="text" class="form-control input_bl<?php echo $bl['id_biaya']; ?>"
+                                                name="ket_bl<?php echo $bl['id_biaya']; ?>">
                                         </td>
                                         <td width="20%"><input type="number"
-                                                class="form-control input_bl<?= $bl['id_biaya']; ?>"
-                                                name="jumlah_bl<?= $bl['id_biaya']; ?>"></td>
+                                                class="form-control input_bl<?php echo $bl['id_biaya']; ?>"
+                                                name="jumlah_bl<?php echo $bl['id_biaya']; ?>"></td>
                                         <td width="20%"><input type="number"
-                                                class="form-control input_bl<?= $bl['id_biaya']; ?> grandbl"
-                                                oninput="HitungTotalBl()" name="nilai_bl<?= $bl['id_biaya']; ?>"></td>
+                                                class="form-control input_bl<?php echo $bl['id_biaya']; ?> grandbl"
+                                                oninput="HitungTotalBl()" name="nilai_bl<?php echo $bl['id_biaya']; ?>"></td>
                                     </tr>
-                                    <?php endforeach;?>
+                                    <?php }?>
                                 </tbody>
                             </table>
                             <table class="table table-bordered" style="width: 100%;">
@@ -200,16 +204,16 @@ input[type=number] {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php 
-                                            foreach($biaya_lain as $bl):?>
+                                        <?php
+                                            foreach ($biaya_lain as $bl) { ?>
                                         <tr>
                                             <td style="width: 10%"><input type="checkbox" class="form-check-input"
-                                                    id="tbbl<?= $bl['id_biaya']; ?>"
-                                                    onclick="tambahbl(<?= $bl['id_biaya'];?>)"></td>
-                                            <td><?= $bl["kode_biaya"];?></td>
-                                            <td><?= $bl["nama_biaya"];?></td>
+                                                    id="tbbl<?php echo $bl['id_biaya']; ?>"
+                                                    onclick="tambahbl(<?php echo $bl['id_biaya']; ?>)"></td>
+                                            <td><?php echo $bl['kode_biaya']; ?></td>
+                                            <td><?php echo $bl['nama_biaya']; ?></td>
                                         </tr>
-                                        <?php endforeach;?>
+                                        <?php }?>
                                     </tbody>
                                 </table>
                             </div>
@@ -247,58 +251,58 @@ input[type=number] {
                             <table class="table table-bordered table-striped my-0 pt-0 w-100" style="width: 100%;">
                                 <tbody>
                                 <tbody>
-                                    <?php 
-                                            foreach($pembelian as $pb):?>
-                                    <tr class="d-none w-100" id="trpb<?= $pb['id']; ?>" style="width: 100%;">
+                                    <?php
+                                            foreach ($pembelian as $pb) { ?>
+                                    <tr class="d-none w-100" id="trpb<?php echo $pb['id']; ?>" style="width: 100%;">
                                         <td width="10%">
                                             <span class="d-none"><input type="checkbox" class="form-check-input "
-                                                    id="cb_pb<?= $pb['id']; ?>" name="barang_bp[]"
-                                                    value="<?= $pb['id']; ?>"></span>
+                                                    id="cb_pb<?php echo $pb['id']; ?>" name="barang_bp[]"
+                                                    value="<?php echo $pb['id']; ?>"></span>
                                             <button type="button" class="btn btn-danger btn-sm"
-                                                onclick="hpspb(<?= $pb['id']?>)"><i class="bx bx-trash"></i></button>
-                                            <?= $pb["kode_barang"];?>
+                                                onclick="hpspb(<?php echo $pb['id']; ?>)"><i class="bx bx-trash"></i></button>
+                                            <?php echo $pb['kode_barang']; ?>
                                         </td>
-                                        <td width="30%"><?= $pb["nama_barang"];?></td>
+                                        <td width="30%"><?php echo $pb['nama_barang']; ?></td>
                                         <td width="10%">
-                                            <select name="satuan<?= $pb["id"];?>"
-                                                class="form-control input_pb<?= $pb['id']; ?>">
-                                                <option value="<?= $pb["satuan_utama"];?>"><?= $pb["satuan_utama"];?>
+                                            <select name="satuan<?php echo $pb['id']; ?>"
+                                                class="form-control input_pb<?php echo $pb['id']; ?>">
+                                                <option value="<?php echo $pb['satuan_utama']; ?>"><?php echo $pb['satuan_utama']; ?>
                                                 </option>
-                                                <?php if($pb["satuan_kedua"] != ""):?>
-                                                <option value="<?= $pb["satuan_kedua"];?>"><?= $pb["satuan_kedua"];?>
+                                                <?php if ($pb['satuan_kedua'] != '') { ?>
+                                                <option value="<?php echo $pb['satuan_kedua']; ?>"><?php echo $pb['satuan_kedua']; ?>
                                                 </option>
-                                                <?php endif;?>
-                                                <?php if($pb["satuan_ketiga"] != ""):?>
-                                                <option value="<?= $pb["satuan_ketiga"];?>"><?= $pb["satuan_ketiga"];?>
+                                                <?php }?>
+                                                <?php if ($pb['satuan_ketiga'] != '') { ?>
+                                                <option value="<?php echo $pb['satuan_ketiga']; ?>"><?php echo $pb['satuan_ketiga']; ?>
                                                 </option>
-                                                <?php endif;?>
-                                                <?php if($pb["satuan_keempat"] != ""):?>
-                                                <option value="<?= $pb["satuan_keempat"];?>">
-                                                    <?= $pb["satuan_keempat"];?></option>
-                                                <?php endif;?>
-                                                <?php if($pb["satuan_kelima"] != ""):?>
-                                                <option value="<?= $pb["satuan_kelima"];?>"><?= $pb["satuan_kelima"];?>
+                                                <?php }?>
+                                                <?php if ($pb['satuan_keempat'] != '') { ?>
+                                                <option value="<?php echo $pb['satuan_keempat']; ?>">
+                                                    <?php echo $pb['satuan_keempat']; ?></option>
+                                                <?php }?>
+                                                <?php if ($pb['satuan_kelima'] != '') { ?>
+                                                <option value="<?php echo $pb['satuan_kelima']; ?>"><?php echo $pb['satuan_kelima']; ?>
                                                 </option>
-                                                <?php endif;?>
+                                                <?php }?>
                                             </select>
                                         </td>
                                         <td width="10%">
-                                            <input type="number" class="form-control input_pb<?= $pb['id']; ?>"
-                                                id="qty<?= $pb['id']; ?>" oninput="hargaPb(<?= $pb['id'];?>)"
-                                                name="qty<?= $pb["id"];?>">
+                                            <input type="number" class="form-control input_pb<?php echo $pb['id']; ?>"
+                                                id="qty<?php echo $pb['id']; ?>" oninput="hargaPb(<?php echo $pb['id']; ?>)"
+                                                name="qty<?php echo $pb['id']; ?>">
                                         </td>
                                         <td width="20%" class="text-end">
-                                            <div id="hrg<?= $pb['id']; ?>">Rp. 0,00</div>
-                                            <input type="hidden" class="form-control" name="harga<?= $pb["id"];?>"
-                                                id="harga<?= $pb["id"];?>">
+                                            <div id="hrg<?php echo $pb['id']; ?>">Rp. 0,00</div>
+                                            <input type="hidden" class="form-control" name="harga<?php echo $pb['id']; ?>"
+                                                id="harga<?php echo $pb['id']; ?>">
                                         </td>
                                         <td width="20%"><input type="number"
-                                                class="form-control input_pb<?= $pb['id']; ?> grandpb"
-                                                id="nilai<?= $pb['id']; ?>"
-                                                oninput="HitungTotalPb(); hargaPb(<?= $pb['id'];?>)"
-                                                name="nilai<?= $pb["id"];?>"></td>
+                                                class="form-control input_pb<?php echo $pb['id']; ?> grandpb"
+                                                id="nilai<?php echo $pb['id']; ?>"
+                                                oninput="HitungTotalPb(); hargaPb(<?php echo $pb['id']; ?>)"
+                                                name="nilai<?php echo $pb['id']; ?>"></td>
                                     </tr>
-                                    <?php endforeach;?>
+                                    <?php }?>
                                 </tbody>
                                 </tbody>
                             </table>
@@ -331,16 +335,16 @@ input[type=number] {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php 
-                                            foreach($pembelian as $pb):?>
+                                        <?php
+                                            foreach ($pembelian as $pb) { ?>
                                         <tr>
                                             <td style="width: 10%"><input type="checkbox" class="form-check-input"
-                                                    id="tbpb<?= $pb['id']; ?>" onclick="tambahpb(<?= $pb['id'];?>)">
+                                                    id="tbpb<?php echo $pb['id']; ?>" onclick="tambahpb(<?php echo $pb['id']; ?>)">
                                             </td>
-                                            <td style="width: 20%"><?= $pb["kode_barang"];?></td>
-                                            <td><?= $pb["nama_barang"];?></td>
+                                            <td style="width: 20%"><?php echo $pb['kode_barang']; ?></td>
+                                            <td><?php echo $pb['nama_barang']; ?></td>
                                         </tr>
-                                        <?php endforeach;?>
+                                        <?php }?>
                                     </tbody>
                                 </table>
                             </div>
@@ -505,9 +509,9 @@ input[type=number] {
             }
             </script>
         </form>
-        <?php elseif($olah == "edit"):?>
-        <form action="<?= base_url("admin/dapur_menu/edit/").@$date."/".$username["id"]."/".$trx ;?>" method="post">
-            <input type="hidden" name="no_dok" value="<?= $no_dok;?>">
+        <?php } elseif ($olah == 'edit') { ?>
+        <form action="<?php echo base_url('admin/dapur_menu/edit/').@$date.'/'.$username['id'].'/'.$trx; ?>" method="post">
+            <input type="hidden" name="no_dok" value="<?php echo $no_dok; ?>">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
@@ -526,32 +530,32 @@ input[type=number] {
                                     <th width="20%">Nilai</th>
                                 </thead>
                                 <tbody>
-                                    <?php 
-                                        foreach($biaya_rutin as $br):
-                                        $br2 = $this->db->get_where("master_biaya", ["id_biaya" => $br["biaya_id"]])->row_array();
-                                        ?>
+                                    <?php
+                                        foreach ($biaya_rutin as $br) {
+                                            $br2 = $this->db->get_where('master_biaya', ['id_biaya' => $br['biaya_id']])->row_array();
+                                            ?>
                                     <tr>
-                                        <td><?= $br2["kode_biaya"];?></td>
-                                        <td><?= $br2["nama_biaya"];?></td>
+                                        <td><?php echo $br2['kode_biaya']; ?></td>
+                                        <td><?php echo $br2['nama_biaya']; ?></td>
                                         <td width="25%">
                                             <input type="hidden" class="form-control" name="biaya_br[]" readonly
-                                                value="<?= $br["biaya_id"];?>">
+                                                value="<?php echo $br['biaya_id']; ?>">
                                             <input type="text" class="form-control" name="ket_br[]"
-                                                value="<?= $br["keterangan"];?>">
+                                                value="<?php echo $br['keterangan']; ?>">
                                         </td>
                                         <td width="20%"><input type="number" class="form-control" name="jumlah_br[]"
-                                                value="<?= $br["jumlah"];?>"></td>
+                                                value="<?php echo $br['jumlah']; ?>"></td>
                                         <td width="20%"><input type="number" class="form-control grandbr"
-                                                oninput="HitungTotalBr()" name="nilai_br[]" value="<?= $br["nilai"];?>">
+                                                oninput="HitungTotalBr()" name="nilai_br[]" value="<?php echo $br['nilai']; ?>">
                                         </td>
                                     </tr>
-                                    <?php endforeach;?>
+                                    <?php }?>
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th colspan="4">Total Pengeluaran Rutin</th>
                                         <th>
-                                            <div id="grandbr" class="text-end"><?= Uang($total_br);?></div>
+                                            <div id="grandbr" class="text-end"><?php echo Uang($total_br); ?></div>
                                         </th>
                                     </tr>
                                 </tfoot>
@@ -586,57 +590,57 @@ input[type=number] {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php 
-                                        foreach($biaya_lain as $bl):
-                                        $bl2 = $this->db->get_where("master_biaya", ["id_biaya" => $bl["biaya_id"]])->row_array();
-                                        ?>
+                                    <?php
+                                            foreach ($biaya_lain as $bl) {
+                                                $bl2 = $this->db->get_where('master_biaya', ['id_biaya' => $bl['biaya_id']])->row_array();
+                                                ?>
                                     <tr>
-                                        <td width="10%"><?= $bl2["kode_biaya"];?></td>
-                                        <td width="25%"><?= $bl2["nama_biaya"];?></td>
+                                        <td width="10%"><?php echo $bl2['kode_biaya']; ?></td>
+                                        <td width="25%"><?php echo $bl2['nama_biaya']; ?></td>
                                         <td width="25%">
                                             <input type="hidden" class="form-control" name="akun_bl[]" readonly
-                                                value="<?= $bl["biaya_id"];?>">
+                                                value="<?php echo $bl['biaya_id']; ?>">
                                             <input type="text" class="form-control" name="ket_bl[]"
-                                                value="<?= $bl["keterangan"];?>">
+                                                value="<?php echo $bl['keterangan']; ?>">
                                             <input type="hidden" class="form-control" name="id_dp[]"
-                                                value="<?= $bl["id_dp"];?>">
+                                                value="<?php echo $bl['id_dp']; ?>">
                                         </td>
                                         <td width="20%"><input type="number" class="form-control" name="jumlah_bl[]"
-                                                value="<?= $bl["jumlah"];?>"></td>
+                                                value="<?php echo $bl['jumlah']; ?>"></td>
                                         <td width="20%"><input type="number" class="form-control grandbl"
-                                                oninput="HitungTotalBl()" name="nilai_bl[]" value="<?= $bl["nilai"];?>">
+                                                oninput="HitungTotalBl()" name="nilai_bl[]" value="<?php echo $bl['nilai']; ?>">
                                         </td>
                                     </tr>
-                                    <?php endforeach;?>
+                                    <?php }?>
                                 </tbody>
                             </table>
                             <table class="table table-bordered table-striped my-0 pt-0 w-100" style="width: 100%;">
                                 <tbody style="width: 100%;">
-                                    <?php 
-                                        foreach($master_biaya as $bl):?>
-                                    <tr class="d-none w-100" id="trbl1<?= $bl['id_biaya']; ?>" style="width: 100%;">
+                                    <?php
+                                                foreach ($master_biaya as $bl) { ?>
+                                    <tr class="d-none w-100" id="trbl1<?php echo $bl['id_biaya']; ?>" style="width: 100%;">
                                         <td width="10%">
                                             <span class="d-none"><input type="checkbox"
-                                                    id="cb_bl1<?= $bl['id_biaya']; ?>" name="biaya_bl1[]"
-                                                    value="<?= $bl['id_biaya']; ?>"></span>
+                                                    id="cb_bl1<?php echo $bl['id_biaya']; ?>" name="biaya_bl1[]"
+                                                    value="<?php echo $bl['id_biaya']; ?>"></span>
                                             <button type="button" class="btn btn-danger btn-sm"
-                                                onclick="hpsbl1(<?= $bl['id_biaya']?>)"><i
+                                                onclick="hpsbl1(<?php echo $bl['id_biaya']; ?>)"><i
                                                     class="bx bx-trash"></i></button>
-                                            <?= $bl["kode_biaya"];?>
+                                            <?php echo $bl['kode_biaya']; ?>
                                         </td>
-                                        <td width="25%"><?= $bl["nama_biaya"];?></td>
+                                        <td width="25%"><?php echo $bl['nama_biaya']; ?></td>
                                         <td width="25%">
-                                            <input type="text" class="form-control input_bl1<?= $bl['id_biaya']; ?>"
-                                                name="ket_bl1<?= $bl['id_biaya']; ?>">
+                                            <input type="text" class="form-control input_bl1<?php echo $bl['id_biaya']; ?>"
+                                                name="ket_bl1<?php echo $bl['id_biaya']; ?>">
                                         </td>
                                         <td width="20%"><input type="number"
-                                                class="form-control input_bl1<?= $bl['id_biaya']; ?>"
-                                                name="jumlah_bl1<?= $bl['id_biaya']; ?>"></td>
+                                                class="form-control input_bl1<?php echo $bl['id_biaya']; ?>"
+                                                name="jumlah_bl1<?php echo $bl['id_biaya']; ?>"></td>
                                         <td width="20%"><input type="number"
-                                                class="form-control input_bl1<?= $bl['id_biaya']; ?> grandbl"
-                                                oninput="HitungTotalBl()" name="nilai_bl1<?= $bl['id_biaya']; ?>"></td>
+                                                class="form-control input_bl1<?php echo $bl['id_biaya']; ?> grandbl"
+                                                oninput="HitungTotalBl()" name="nilai_bl1<?php echo $bl['id_biaya']; ?>"></td>
                                     </tr>
-                                    <?php endforeach;?>
+                                    <?php }?>
                                 </tbody>
                             </table>
                             <table class="table table-bordered" style="width: 100%;">
@@ -644,7 +648,7 @@ input[type=number] {
                                     <tr>
                                         <th width="80%" colspan="4">Total Pengeluaran Lain Lain</th>
                                         <th width="20%">
-                                            <div id="grandbl" class="text-end"><?= Uang($total_bl);?></div>
+                                            <div id="grandbl" class="text-end"><?php echo Uang($total_bl); ?></div>
                                         </th>
                                     </tr>
                                 </tfoot>
@@ -670,16 +674,16 @@ input[type=number] {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php 
-                                            foreach($master_biaya as $bl):?>
+                                        <?php
+                                                    foreach ($master_biaya as $bl) { ?>
                                         <tr>
                                             <td style="width: 10%"><input type="checkbox" class="form-check-input"
-                                                    id="tbbl1<?= $bl['id_biaya']; ?>"
-                                                    onclick="tambahbl1(<?= $bl['id_biaya'];?>)"></td>
-                                            <td><?= $bl["kode_biaya"];?></td>
-                                            <td><?= $bl["nama_biaya"];?></td>
+                                                    id="tbbl1<?php echo $bl['id_biaya']; ?>"
+                                                    onclick="tambahbl1(<?php echo $bl['id_biaya']; ?>)"></td>
+                                            <td><?php echo $bl['kode_biaya']; ?></td>
+                                            <td><?php echo $bl['nama_biaya']; ?></td>
                                         </tr>
-                                        <?php endforeach;?>
+                                        <?php }?>
                                     </tbody>
                                 </table>
                             </div>
@@ -714,135 +718,145 @@ input[type=number] {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php 
-                                        foreach($pembelian as $pb):
-                                        $pb2 = $this->db->get_where("master_barang", ["id" => $pb["barang_id"]])->row_array();
-                                        ?>
+                                    <?php
+                                                foreach ($pembelian as $pb) {
+                                                    $pb2 = $this->db->get_where('master_barang', ['id' => $pb['barang_id']])->row_array();
+                                                    ?>
                                     <tr>
-                                        <td><?= $pb2["kode_barang"];?></td>
-                                        <td><?= $pb2["nama_barang"];?></td>
+                                        <td><?php echo $pb2['kode_barang']; ?></td>
+                                        <td><?php echo $pb2['nama_barang']; ?></td>
                                         <td>
                                             <select name="satuan[]"
-                                                class="form-control input_pb<?= $pb['barang_id']; ?>">
+                                                class="form-control input_pb<?php echo $pb['barang_id']; ?>">
                                                 <option
-                                                    <?php if($pb["satuan"] == $pb2["satuan_utama"]){ echo "selected"; };?>
-                                                    value="<?= $pb2["satuan_utama"];?>"><?= $pb2["satuan_utama"];?>
+                                                    <?php if ($pb['satuan'] == $pb2['satuan_utama']) {
+                                                        echo 'selected';
+                                                    }?>
+                                                    value="<?php echo $pb2['satuan_utama']; ?>"><?php echo $pb2['satuan_utama']; ?>
                                                 </option>
-                                                <?php if($pb2["satuan_kedua"] != ""):?>
+                                                <?php if ($pb2['satuan_kedua'] != '') { ?>
                                                 <option
-                                                    <?php if($pb["satuan"] == $pb2["satuan_kedua"]){ echo "selected"; };?>
-                                                    value="<?= $pb2["satuan_kedua"];?>"><?= $pb2["satuan_kedua"];?>
+                                                    <?php if ($pb['satuan'] == $pb2['satuan_kedua']) {
+                                                        echo 'selected';
+                                                    }?>
+                                                    value="<?php echo $pb2['satuan_kedua']; ?>"><?php echo $pb2['satuan_kedua']; ?>
                                                 </option>
-                                                <?php endif;?>
-                                                <?php if($pb2["satuan_ketiga"] != ""):?>
+                                                <?php }?>
+                                                <?php if ($pb2['satuan_ketiga'] != '') { ?>
                                                 <option
-                                                    <?php if($pb["satuan"] == $pb2["satuan_ketiga"]){ echo "selected"; };?>
-                                                    value="<?= $pb2["satuan_ketiga"];?>"><?= $pb2["satuan_ketiga"];?>
+                                                    <?php if ($pb['satuan'] == $pb2['satuan_ketiga']) {
+                                                        echo 'selected';
+                                                    }?>
+                                                    value="<?php echo $pb2['satuan_ketiga']; ?>"><?php echo $pb2['satuan_ketiga']; ?>
                                                 </option>
-                                                <?php endif;?>
-                                                <?php if($pb2["satuan_keempat"] != ""):?>
+                                                <?php }?>
+                                                <?php if ($pb2['satuan_keempat'] != '') { ?>
                                                 <option
-                                                    <?php if($pb["satuan"] == $pb2["satuan_keempat"]){ echo "selected"; };?>
-                                                    value="<?= $pb2["satuan_keempat"];?>"><?= $pb2["satuan_keempat"];?>
+                                                    <?php if ($pb['satuan'] == $pb2['satuan_keempat']) {
+                                                        echo 'selected';
+                                                    }?>
+                                                    value="<?php echo $pb2['satuan_keempat']; ?>"><?php echo $pb2['satuan_keempat']; ?>
                                                 </option>
-                                                <?php endif;?>
-                                                <?php if($pb2["satuan_kelima"] != ""):?>
+                                                <?php }?>
+                                                <?php if ($pb2['satuan_kelima'] != '') { ?>
                                                 <option
-                                                    <?php if($pb["satuan"] == $pb2["satuan_kelima"]){ echo "selected"; };?>
-                                                    value="<?= $pb2["satuan_kelima"];?>"><?= $pb2["satuan_kelima"];?>
+                                                    <?php if ($pb['satuan'] == $pb2['satuan_kelima']) {
+                                                        echo 'selected';
+                                                    }?>
+                                                    value="<?php echo $pb2['satuan_kelima']; ?>"><?php echo $pb2['satuan_kelima']; ?>
                                                 </option>
-                                                <?php endif;?>
+                                                <?php }?>
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control input_pb<?= $pb['barang_id']; ?>"
-                                                id="qty<?= $pb['barang_id']; ?>"
-                                                oninput="hargaPb(<?= $pb['barang_id'];?>)" name="qty[]"
-                                                value="<?= $pb["qty"];?>">
+                                            <input type="number" class="form-control input_pb<?php echo $pb['barang_id']; ?>"
+                                                id="qty<?php echo $pb['barang_id']; ?>"
+                                                oninput="hargaPb(<?php echo $pb['barang_id']; ?>)" name="qty[]"
+                                                value="<?php echo $pb['qty']; ?>">
                                         </td>
                                         <td class="text-end">
-                                            <div id="hrg<?= $pb['barang_id']; ?>"><?= Uang($pb["harga"]);?></div>
+                                            <div id="hrg<?php echo $pb['barang_id']; ?>"><?php echo Uang($pb['harga']); ?></div>
                                             <input type="hidden" class="form-control" name="barang_bp[]" readonly
-                                                value="<?= $pb["barang_id"];?>">
+                                                value="<?php echo $pb['barang_id']; ?>">
                                             <input type="hidden" class="form-control" name="harga[]"
-                                                value="<?= $pb["harga"];?>" id="harga<?= $pb["barang_id"];?>">
+                                                value="<?php echo $pb['harga']; ?>" id="harga<?php echo $pb['barang_id']; ?>">
                                             <input type="hidden" class="form-control" name="id_pem[]"
-                                                value="<?= $pb["id_pb"];?>">
+                                                value="<?php echo $pb['id_pb']; ?>">
                                         </td>
                                         <td><input type="number"
-                                                class="form-control input_pb<?= $pb['barang_id']; ?> grandpb"
-                                                id="nilai<?= $pb['barang_id']; ?>"
-                                                oninput="HitungTotalPb(); hargaPb(<?= $pb['barang_id'];?>)"
-                                                value="<?= $pb["nilai"];?>" name="nilai[]"></td>
+                                                class="form-control input_pb<?php echo $pb['barang_id']; ?> grandpb"
+                                                id="nilai<?php echo $pb['barang_id']; ?>"
+                                                oninput="HitungTotalPb(); hargaPb(<?php echo $pb['barang_id']; ?>)"
+                                                value="<?php echo $pb['nilai']; ?>" name="nilai[]"></td>
                                     </tr>
-                                    <?php endforeach;?>
+                                    <?php }?>
                                 </tbody>
                             </table>
                             <table class="table table-bordered table-striped my-0 pt-0 w-100" style="width: 100%;">
                                 <tbody>
-                                    <?php 
-                                        foreach($beli as $pb):?>
                                     <?php
-                                            $cek = $this->db->get_where("dapur_pembelian", ["tanggal" => $date, "user_id" => $username["id"], "barang_id" => $pb["id"]])->num_rows();
-                                            if($cek == 0): ?>
-                                    <tr class="d-none w-100" id="trpb1<?= $pb['id']; ?>" style="width: 100%;">
+                                        foreach ($beli as $pb) { ?>
+                                    <?php
+                                            $cek = $this->db->get_where('dapur_pembelian', ['tanggal' => $date, 'user_id' => $username['id'], 'barang_id' => $pb['id']])->num_rows();
+                                            if ($cek == 0) { ?>
+                                    <tr class="d-none w-100" id="trpb1<?php echo $pb['id']; ?>" style="width: 100%;">
                                         <td width="10%">
                                             <span class="d-none"><input type="checkbox" class="form-check-input"
-                                                    id="cb_pb1<?= $pb['id']; ?>" name="barang_bp1[]"
-                                                    value="<?= $pb['id']; ?>"></span>
+                                                    id="cb_pb1<?php echo $pb['id']; ?>" name="barang_bp1[]"
+                                                    value="<?php echo $pb['id']; ?>"></span>
                                             <button type="button" class="btn btn-danger btn-sm"
-                                                onclick="hpspb1(<?= $pb['id']?>)"><i class="bx bx-trash"></i></button>
-                                            <?= $pb["kode_barang"];?>
+                                                onclick="hpspb1(<?php echo $pb['id']; ?>)"><i class="bx bx-trash"></i></button>
+                                            <?php echo $pb['kode_barang']; ?>
                                         </td>
-                                        <td width="30%"><?= $pb["nama_barang"];?></td>
+                                        <td width="30%"><?php echo $pb['nama_barang']; ?></td>
                                         <td width="10%">
-                                            <select name="satuan1<?= $pb["id"];?>"
-                                                class="form-control input_pb1<?= $pb['id']; ?>">
-                                                <option value="<?= $pb["satuan_utama"];?>"><?= $pb["satuan_utama"];?>
+                                            <select name="satuan1<?php echo $pb['id']; ?>"
+                                                class="form-control input_pb1<?php echo $pb['id']; ?>">
+                                                <option value="<?php echo $pb['satuan_utama']; ?>"><?php echo $pb['satuan_utama']; ?>
                                                 </option>
-                                                <?php if($pb["satuan_kedua"] != ""):?>
-                                                <option value="<?= $pb["satuan_kedua"];?>"><?= $pb["satuan_kedua"];?>
+                                                <?php if ($pb['satuan_kedua'] != '') { ?>
+                                                <option value="<?php echo $pb['satuan_kedua']; ?>"><?php echo $pb['satuan_kedua']; ?>
                                                 </option>
-                                                <?php endif;?>
-                                                <?php if($pb["satuan_ketiga"] != ""):?>
-                                                <option value="<?= $pb["satuan_ketiga"];?>"><?= $pb["satuan_ketiga"];?>
+                                                <?php }?>
+                                                <?php if ($pb['satuan_ketiga'] != '') { ?>
+                                                <option value="<?php echo $pb['satuan_ketiga']; ?>"><?php echo $pb['satuan_ketiga']; ?>
                                                 </option>
-                                                <?php endif;?>
-                                                <?php if($pb["satuan_keempat"] != ""):?>
-                                                <option value="<?= $pb["satuan_keempat"];?>">
-                                                    <?= $pb["satuan_keempat"];?></option>
-                                                <?php endif;?>
-                                                <?php if($pb["satuan_kelima"] != ""):?>
-                                                <option value="<?= $pb["satuan_kelima"];?>"><?= $pb["satuan_kelima"];?>
+                                                <?php }?>
+                                                <?php if ($pb['satuan_keempat'] != '') { ?>
+                                                <option value="<?php echo $pb['satuan_keempat']; ?>">
+                                                    <?php echo $pb['satuan_keempat']; ?></option>
+                                                <?php }?>
+                                                <?php if ($pb['satuan_kelima'] != '') { ?>
+                                                <option value="<?php echo $pb['satuan_kelima']; ?>"><?php echo $pb['satuan_kelima']; ?>
                                                 </option>
-                                                <?php endif;?>
+                                                <?php }?>
                                             </select>
                                         </td>
                                         <td width="10%">
-                                            <input type="number" class="form-control input_pb1<?= $pb['id']; ?>"
-                                                id="qty1<?= $pb['id']; ?>" oninput="hargaPb1(<?= $pb['id'];?>)"
-                                                name="qty1<?= $pb["id"];?>">
+                                            <input type="number" class="form-control input_pb1<?php echo $pb['id']; ?>"
+                                                id="qty1<?php echo $pb['id']; ?>" oninput="hargaPb1(<?php echo $pb['id']; ?>)"
+                                                name="qty1<?php echo $pb['id']; ?>">
                                         </td>
                                         <td width="20%" class="text-end">
-                                            <div id="hrg1<?= $pb['id']; ?>">Rp. 0,00</div>
-                                            <input type="hidden" class="form-control" name="harga1<?= $pb["id"];?>"
-                                                id="harga1<?= $pb["id"];?>">
+                                            <div id="hrg1<?php echo $pb['id']; ?>">Rp. 0,00</div>
+                                            <input type="hidden" class="form-control" name="harga1<?php echo $pb['id']; ?>"
+                                                id="harga1<?php echo $pb['id']; ?>">
                                         </td>
                                         <td width="20%"><input type="number"
-                                                class="form-control input_pb1<?= $pb['id']; ?> grandpb"
-                                                id="nilai1<?= $pb['id']; ?>"
-                                                oninput="HitungTotalPb(); hargaPb1(<?= $pb['id'];?>)"
-                                                name="nilai1<?= $pb["id"];?>"></td>
+                                                class="form-control input_pb1<?php echo $pb['id']; ?> grandpb"
+                                                id="nilai1<?php echo $pb['id']; ?>"
+                                                oninput="HitungTotalPb(); hargaPb1(<?php echo $pb['id']; ?>)"
+                                                name="nilai1<?php echo $pb['id']; ?>"></td>
                                     </tr>
-                                    <?php endif;?>
-                                    <?php endforeach;?>
+                                    <?php }?>
+                                    <?php }?>
                                 </tbody>
                             </table>
                             <table class="table table-bordered" style="width: 100%;">
                                 <tfoot style="border-top: 2px solid #000">
                                     <tr>
                                         <th colspan="5">Total Pembelian Barang</th>
-                                        <th class="text-end" id="grandpb" width="20%"><?= Uang($total_pb);?></th>
+                                        <th class="text-end" id="grandpb" width="20%"><?php echo Uang($total_pb); ?></th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -867,21 +881,21 @@ input[type=number] {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php 
-                                            foreach($beli as $pb):?>
                                         <?php
-                                                $cek = $this->db->get_where("dapur_pembelian", ["tanggal" => $date, "user_id" => $username["id"], "barang_id" => $pb["id"]])->num_rows();
-                                                if($cek == 0): 
-                                                ?>
+                                            foreach ($beli as $pb) { ?>
+                                        <?php
+                                                $cek = $this->db->get_where('dapur_pembelian', ['tanggal' => $date, 'user_id' => $username['id'], 'barang_id' => $pb['id']])->num_rows();
+                                                if ($cek == 0) {
+                                                    ?>
                                         <tr>
                                             <td style="width: 10%"><input type="checkbox" class="form-check-input"
-                                                    id="tbpb1<?= $pb['id']; ?>" onclick="tambahpb1(<?= $pb['id'];?>)">
+                                                    id="tbpb1<?php echo $pb['id']; ?>" onclick="tambahpb1(<?php echo $pb['id']; ?>)">
                                             </td>
-                                            <td style="width: 20%"><?= $pb["kode_barang"];?></td>
-                                            <td><?= $pb["nama_barang"];?></td>
+                                            <td style="width: 20%"><?php echo $pb['kode_barang']; ?></td>
+                                            <td><?php echo $pb['nama_barang']; ?></td>
                                         </tr>
-                                        <?php endif;?>
-                                        <?php endforeach;?>
+                                        <?php }?>
+                                        <?php }?>
                                     </tbody>
                                 </table>
                             </div>
@@ -895,25 +909,25 @@ input[type=number] {
                                 <tbody>
                                     <tr>
                                         <td>Total Pengeluaran Rutin</td>
-                                        <input type="hidden" value="<?= $total_br;?>" id="grandbr1">
-                                        <td width="20%" class="text-end" id="grandbr2"><?= Uang($total_br);?></td>
+                                        <input type="hidden" value="<?php echo $total_br; ?>" id="grandbr1">
+                                        <td width="20%" class="text-end" id="grandbr2"><?php echo Uang($total_br); ?></td>
                                     </tr>
                                     <tr>
                                         <td>Total Pengeluaran Lain Lain</td>
-                                        <input type="hidden" value="<?= $total_bl;?>" id="grandbl1">
-                                        <td width="20%" class="text-end" id="grandbl2"><?= Uang($total_bl);?></td>
+                                        <input type="hidden" value="<?php echo $total_bl; ?>" id="grandbl1">
+                                        <td width="20%" class="text-end" id="grandbl2"><?php echo Uang($total_bl); ?></td>
                                     </tr>
                                     <tr>
                                         <td>Total Pembelian Barang</td>
-                                        <input type="hidden" value="<?= $total_pb;?>" id="grandpb1">
-                                        <td width="20%" class="text-end" id="grandpb2"><?= Uang($total_pb);?></td>
+                                        <input type="hidden" value="<?php echo $total_pb; ?>" id="grandpb1">
+                                        <td width="20%" class="text-end" id="grandpb2"><?php echo Uang($total_pb); ?></td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th>Grand Total Pengeluran Dapur</th>
                                         <th width="20%" class="text-end" id="maxpengeluaran">
-                                            <?= Uang($total_br + $total_bl + $total_pb);?></th>
+                                            <?php echo Uang($total_br + $total_bl + $total_pb); ?></th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -1040,6 +1054,6 @@ input[type=number] {
             }
             </script>
         </form>
-        <?php endif;?>
+        <?php }?>
     </div>
 </div>

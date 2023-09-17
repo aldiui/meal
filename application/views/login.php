@@ -5,14 +5,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Login</title>
-    <link rel="icon" href="<?= base_url();?>assets/images/logo.webp" class="rounded" />
-    <link href="<?= base_url();?>assets/css/pace.min.css" rel="stylesheet" />
+    <link rel="icon" href="<?php echo base_url(); ?>assets/images/logo.webp" class="rounded" />
+    <link href="<?php echo base_url(); ?>assets/css/pace.min.css" rel="stylesheet" />
     <script src="assets/js/pace.min.js"></script>
-    <link rel="stylesheet" href="<?= base_url();?>assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Roboto&display=swap" />
-    <link rel="stylesheet" href="<?= base_url();?>assets/css/icons.css" />
-    <link rel="stylesheet" href="<?= base_url();?>assets/css/app.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/icons.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/app.css" />
 </head>
 
 <body class="bg-login">
@@ -25,12 +25,12 @@
                             <div class="col-xl-6 h-auto">
                                 <div class="card-body p-5">
                                     <div class="text-center">
-                                        <img src="<?= base_url();?>assets/images/logo.webp" class="rounded shadow"
+                                        <img src="<?php echo base_url(); ?>assets/images/logo.webp" class="rounded shadow"
                                             width="200" alt="" />
                                         <h3 class="mt-4 fw-bold">Selamat Datang</h3>
                                     </div>
                                     <div class="">
-                                        <?= $this->session->flashdata('pesan'); ?>
+                                        <?php echo $this->session->flashdata('pesan'); ?>
                                         <div class="login-separater text-center mb-4">
                                             <span>Masuk Menggunakan Username</span>
                                             <hr />
@@ -41,7 +41,7 @@
                                                     <label for="username" class="form-label">Masukan Username</label>
                                                     <input type="text" class="form-control" id="username"
                                                         placeholder="Username ..." name="username" />
-                                                    <?= form_error("username", '<small class="text-danger">', '</small>');?>
+                                                    <?php echo form_error('username', '<small class="text-danger">', '</small>'); ?>
                                                 </div>
                                                 <div class="col-12">
                                                     <label for="password" class="form-label">Masukan Password</label>
@@ -52,7 +52,7 @@
                                                             <i class="bx bx-hide"></i>
                                                         </a>
                                                     </div>
-                                                    <?= form_error("password", '<small class="text-danger">', '</small>');?>
+                                                    <?php echo form_error('password', '<small class="text-danger">', '</small>'); ?>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="d-grid">
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-6 bg-login-color d-flex align-items-center justify-content-center">
-                                <img src="<?= base_url();?>assets/images/login-images/login-frent-img.jpg"
+                                <img src="<?php echo base_url(); ?>assets/images/login-images/login-frent-img.jpg"
                                     class="img-fluid" alt="..." />
                             </div>
                         </div>
@@ -78,8 +78,8 @@
     </div>
 </body>
 
-<script src="<?= base_url();?>assets/js/jquery.min.js"></script>
-<script src="<?= base_url();?>assets/js/bootstrap.bundle.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.min.js"></script>
 <script>
 $(document).ready(function() {
     $("#show_hide_password a").on("click", function(event) {

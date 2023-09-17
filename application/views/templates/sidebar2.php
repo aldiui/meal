@@ -2,7 +2,7 @@
     <div class="sidebar-wrapper" data-simplebar="true">
         <div class="sidebar-header">
             <div class="">
-                <img src="<?= base_url();?>assets/images/logo.webp" class="rounded" width="40" alt="" />
+                <img src="<?php echo base_url(); ?>assets/images/logo.webp" class="rounded" width="40" alt="" />
             </div>
             <div>
                 <h4 class="logo-text fw-bold">Little Meal</h4>
@@ -13,7 +13,7 @@
         <!--navigation-->
         <ul class="metismenu" id="menu">
             <li>
-                <a href="<?= base_url('dapur/dashboard/') ?>">
+                <a href="<?php echo base_url('dapur/dashboard/'); ?>">
                     <div class="parent-icon icon-color-1"><i class="bx bx-home-alt"></i>
                     </div>
                     <div class="menu-title">Dashboard</div>
@@ -27,14 +27,14 @@
                     <div class="menu-title">Dapur Menu</div>
                 </a>
                 <ul>
-                    <li> <a href="<?= base_url('dapur/dapur_menu') ?>"><i class="bx bx-right-arrow-alt"></i>Input
+                    <li> <a href="<?php echo base_url('dapur/dapur_menu'); ?>"><i class="bx bx-right-arrow-alt"></i>Input
                             Pengeluaran</a>
                     </li>
-                    <?php if($nickname["dapur"] == 0):?>
-                    <li> <a href="<?= base_url('dapur/serah_terima') ?>"><i class="bx bx-right-arrow-alt"></i>Serah
+                    <?php if ($nickname['dapur'] == 0) { ?>
+                    <li> <a href="<?php echo base_url('dapur/serah_terima'); ?>"><i class="bx bx-right-arrow-alt"></i>Serah
                             Terima</a>
                     </li>
-                    <?php endif;?>
+                    <?php }?>
                 </ul>
             </li>
         </ul>

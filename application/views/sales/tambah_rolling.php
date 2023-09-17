@@ -9,38 +9,38 @@ input[type=number] {
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item">
-                        <a href="<?= base_url("admin/dashboard");?>"><i class="bx bx-home-alt"></i></a>
+                        <a href="<?php echo base_url('admin/dashboard'); ?>"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page"><?= $title;?></li>
+                    <li class="breadcrumb-item active" aria-current="page"><?php echo $title; ?></li>
                 </ol>
             </nav>
         </div>
         <div class="col-12">
-            <?= $this->session->flashdata('pesan'); ?>
+            <?php echo $this->session->flashdata('pesan'); ?>
         </div>
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <?= $title ;?> Sales
+                        <?php echo $title; ?> Sales
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="<?= base_url("sales/sales_menu/rolling_sales");?>" method="get">
+                    <form action="<?php echo base_url('sales/sales_menu/rolling_sales'); ?>" method="get">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group mb-2">
                                     <label for="date" class="form-label">Tanggal</label>
                                     <input class="result form-control" type="text" id="date" placeholder="Tanggal..."
-                                        required name="tanggal" value="<?= @$date ?>">
-                                    <input type="hidden" value="<?= @$username["id"] ?>" name="id">
+                                        required name="tanggal" value="<?php echo @$date; ?>">
+                                    <input type="hidden" value="<?php echo @$username['id']; ?>" name="id">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group mb-2">
                                     <label for="date" class="form-label">Outlet</label>
                                     <input class="result form-control" type="text"
-                                        value="<?= getOutlet(@$username["outlet_id"]) ?>" readonly>
+                                        value="<?php echo getOutlet(@$username['outlet_id']); ?>" readonly>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -54,8 +54,8 @@ input[type=number] {
             </div>
         </div>
         <div class="col-12">
-            <?php if($olah == "input"):?>
-            <form action="<?= base_url("sales/sales_menu/tambah_rs/").@$date."/". @$username["id"] ;?>" method="post">
+            <?php if ($olah == 'input') { ?>
+            <form action="<?php echo base_url('sales/sales_menu/tambah_rs/').@$date.'/'.@$username['id']; ?>" method="post">
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">Persediaan</div>
@@ -74,34 +74,34 @@ input[type=number] {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php if($this->input->get('tanggal') != null):?>
-                                    <input type="hidden" name="no_bukti" value="<?= $no_bukti;?>">
+                                    <?php if ($this->input->get('tanggal') != null) { ?>
+                                    <input type="hidden" name="no_bukti" value="<?php echo $no_bukti; ?>">
                                     <?php
                                     $no = 1;
-                                        foreach ($sediaan as $s):?>
+                                        foreach ($sediaan as $s) { ?>
                                     <tr>
-                                        <td><?= $no++;?></td>
-                                        <td><?= $s["kode_barang"];?></td>
-                                        <td><?= $s["nama_barang"];?></td>
+                                        <td><?php echo $no++; ?></td>
+                                        <td><?php echo $s['kode_barang']; ?></td>
+                                        <td><?php echo $s['nama_barang']; ?></td>
                                         <td width="15%">
-                                            <?php $barang = $this->db->get_where("barang_sediaan", ["barang_id" => $s["id"]])->row_array();?>
-                                            <input type="hidden" value="<?= $barang["id"];?>" name="sediaan[]">
+                                            <?php $barang = $this->db->get_where('barang_sediaan', ['barang_id' => $s['id']])->row_array(); ?>
+                                            <input type="hidden" value="<?php echo $barang['id']; ?>" name="sediaan[]">
                                             <input type="number"
-                                                oninput="updateQtyAkhir(this.value, <?= $barang['id'] ?>)"
-                                                class="form-control" id="qty_awal<?= $barang["id"];?>" min="0"
+                                                oninput="updateQtyAkhir(this.value, <?php echo $barang['id']; ?>)"
+                                                class="form-control" id="qty_awal<?php echo $barang['id']; ?>" min="0"
                                                 name="qtyawl[]">
                                         </td>
                                         <td width="15%" class="text-end">
                                             <input type="number" class="form-control"
-                                                id="qty_pemakaian<?= $barang["id"] ?>" name="qtypki[]" readonly>
+                                                id="qty_pemakaian<?php echo $barang['id']; ?>" name="qtypki[]" readonly>
                                         </td>
                                         <td width=" 15%" class="text-end">
-                                            <input type="number" class="form-control" id="qty_akhir<?= $barang["id"] ?>"
+                                            <input type="number" class="form-control" id="qty_akhir<?php echo $barang['id']; ?>"
                                                 readonly>
                                         </td>
                                     </tr>
-                                    <?php endforeach;?>
-                                    <?php endif;?>
+                                    <?php }?>
+                                    <?php }?>
                                 </tbody>
                             </table>
                         </div>
@@ -125,78 +125,78 @@ input[type=number] {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php if($this->input->get('tanggal') != null):?>
+                                    <?php if ($this->input->get('tanggal') != null) { ?>
                                     <?php
                                         $no = 1;
-                                        foreach ($penjualan as $pj):
+                                        foreach ($penjualan as $pj) {
                                             ?>
-                                    <?php if($pj['sediaan_id'] > 0):?>
+                                    <?php if ($pj['sediaan_id'] > 0) { ?>
                                     <tr>
-                                        <td><?= $no++;?></td>
-                                        <td><?= $pj["kode_barang"];?></td>
-                                        <td><?= $pj["nama_barang"];?></td>
+                                        <td><?php echo $no++; ?></td>
+                                        <td><?php echo $pj['kode_barang']; ?></td>
+                                        <td><?php echo $pj['nama_barang']; ?></td>
                                         <td>
                                             <input type="hidden" name="sediaan_id[]" class="form-control"
-                                                value="<?= $pj["sediaan_id"]; ?>" readonly>
+                                                value="<?php echo $pj['sediaan_id']; ?>" readonly>
                                             <input type="hidden" name="barang_id[]" class="form-control"
-                                                value="<?= $pj["id"]; ?>" readonly>
+                                                value="<?php echo $pj['id']; ?>" readonly>
                                             <input type="hidden" name="qty_awal[]"
-                                                class="form-control awalan<?= $pj['sediaan_id'] ?>"
-                                                id="awalan<?= $no ?>" readonly>
+                                                class="form-control awalan<?php echo $pj['sediaan_id']; ?>"
+                                                id="awalan<?php echo $no; ?>" readonly>
                                             <input type="number" name="qty_pemakaian[]"
-                                                oninput="HitungPenjualan(this.value, <?= $no ?>); HitungSisaStok(<?= $pj['sediaan_id'] ?>);  HitungTotalPenjualan();"
-                                                class="form-control pemakaian<?= $pj['sediaan_id'] ?>" min="0">
+                                                oninput="HitungPenjualan(this.value, <?php echo $no; ?>); HitungSisaStok(<?php echo $pj['sediaan_id']; ?>);  HitungTotalPenjualan();"
+                                                class="form-control pemakaian<?php echo $pj['sediaan_id']; ?>" min="0">
                                             <input type="hidden" name="qty_akhir[]" class="form-control"
-                                                id="akhiran<?= $no ?>" readonly>
+                                                id="akhiran<?php echo $no; ?>" readonly>
                                         </td>
                                         <td class="text-end">
-                                            <input type="hidden" value="<?= $pj["harga"]; ?>" class="form-control"
-                                                id="harga<?= $no ?>" readonly>
-                                            <?= Uang($pj["harga"])?>
+                                            <input type="hidden" value="<?php echo $pj['harga']; ?>" class="form-control"
+                                                id="harga<?php echo $no; ?>" readonly>
+                                            <?php echo Uang($pj['harga']); ?>
                                         </td>
                                         <td class="text-end">
                                             <input type="hidden" name="total[]" class="form-control grandpenjualan"
-                                                readonly id="total<?= $no ?>">
-                                            <span id="total2<?= $no ?>">Rp. 0,00</span>
+                                                readonly id="total<?php echo $no; ?>">
+                                            <span id="total2<?php echo $no; ?>">Rp. 0,00</span>
                                         </td>
                                     </tr>
-                                    <?php else:?>
+                                    <?php } else { ?>
                                     <tr>
-                                        <td><?= $no++;?></td>
-                                        <td><?= $pj["kode_barang"];?></td>
-                                        <td><?= $pj["nama_barang"];?></td>
+                                        <td><?php echo $no++; ?></td>
+                                        <td><?php echo $pj['kode_barang']; ?></td>
+                                        <td><?php echo $pj['nama_barang']; ?></td>
                                         <td>
 
                                             <input type="hidden" name="sediaan_id[]" class="form-control"
-                                                value="<?= $pj["sediaan_id"]; ?>" readonly>
+                                                value="<?php echo $pj['sediaan_id']; ?>" readonly>
                                             <input type="hidden" name="barang_id[]" class="form-control"
-                                                value="<?= $pj['id'] ?>" readonly>
+                                                value="<?php echo $pj['id']; ?>" readonly>
                                             <input type="number" name="qty_pemakaian[]"
-                                                oninput="HitungPenjualan(this.value, <?= $no ?>); HitungPaket(this.value, <?= $pj['id'] ?>); HitungSisaStok(<?= $pj['sediaan2'];?>); HitungSisaStok(<?= $pj['sediaan3'];?>); HitungSisaStok(<?= $pj['sediaan4'];?>); HitungSisaStok(<?= $pj['sediaan5'];?>); HitungSisaStok(<?= $pj['sediaan6'];?>); HitungSisaStok(<?= $pj['sediaan7'];?>); HitungTotalPenjualan(); "
-                                                class="form-control pemakaian<?= $pj['sediaan_id'] ?>" min="0">
-                                            <?php for ($i = 2; $i <= 7; $i++): ?>
-                                            <?php if($pj["sediaan{$i}"] > 0):?>
-                                            <input type="hidden" value="<?= $pj["qty{$i}"];?>"
-                                                id="qtyp<?= $i . $pj['id'] ?>">
-                                            <input type="hidden" class="pemakaian<?= $pj["sediaan{$i}"]?>"
-                                                id="sediaanp<?= $i . $pj['id'] ?>">
-                                            <?php endif;?>
-                                            <?php endfor; ?>
+                                                oninput="HitungPenjualan(this.value, <?php echo $no; ?>); HitungPaket(this.value, <?php echo $pj['id']; ?>); HitungSisaStok(<?php echo $pj['sediaan2']; ?>); HitungSisaStok(<?php echo $pj['sediaan3']; ?>); HitungSisaStok(<?php echo $pj['sediaan4']; ?>); HitungSisaStok(<?php echo $pj['sediaan5']; ?>); HitungSisaStok(<?php echo $pj['sediaan6']; ?>); HitungSisaStok(<?php echo $pj['sediaan7']; ?>); HitungTotalPenjualan(); "
+                                                class="form-control pemakaian<?php echo $pj['sediaan_id']; ?>" min="0">
+                                            <?php for ($i = 2; $i <= 7; ++$i) { ?>
+                                            <?php if ($pj["sediaan{$i}"] > 0) { ?>
+                                            <input type="hidden" value="<?php echo $pj["qty{$i}"]; ?>"
+                                                id="qtyp<?php echo $i.$pj['id']; ?>">
+                                            <input type="hidden" class="pemakaian<?php echo $pj["sediaan{$i}"]; ?>"
+                                                id="sediaanp<?php echo $i.$pj['id']; ?>">
+                                            <?php }?>
+                                            <?php } ?>
                                         </td>
                                         <td class=" text-end">
-                                            <input type="hidden" value="<?= $pj["harga"]; ?>" class="form-control"
-                                                id="harga<?= $no ?>" readonly>
-                                            <?= Uang($pj["harga"])?>
+                                            <input type="hidden" value="<?php echo $pj['harga']; ?>" class="form-control"
+                                                id="harga<?php echo $no; ?>" readonly>
+                                            <?php echo Uang($pj['harga']); ?>
                                         </td>
                                         <td class="text-end">
                                             <input type="hidden" name="total[]" class="form-control grandpenjualan"
-                                                readonly id="total<?= $no ?>">
-                                            <span id="total2<?= $no ?>">Rp. 0,00</span>
+                                                readonly id="total<?php echo $no; ?>">
+                                            <span id="total2<?php echo $no; ?>">Rp. 0,00</span>
                                         </td>
                                     </tr>
-                                    <?php endif;?>
-                                    <?php endforeach;?>
-                                    <?php endif;?>
+                                    <?php }?>
+                                    <?php }?>
+                                    <?php }?>
                                 </tbody>
                                 <tfoot>
                                     <tr>
@@ -225,26 +225,26 @@ input[type=number] {
                                         <th width="20%">Nilai</th>
                                     </tr>
                                 </thead>
-                                <?php if($this->input->get('tanggal') != null):?>
+                                <?php if ($this->input->get('tanggal') != null) { ?>
                                 <?php
                                             $no = 1;
-                                    foreach ($akun as $ak):
+                                    foreach ($akun as $ak) {
                                         ?>
                                 <tr>
-                                    <td><?= $no++;?></td>
-                                    <td><?= $ak["kode_biaya"];?></td>
-                                    <td><?= $ak["nama_biaya"];?></td>
+                                    <td><?php echo $no++; ?></td>
+                                    <td><?php echo $ak['kode_biaya']; ?></td>
+                                    <td><?php echo $ak['nama_biaya']; ?></td>
                                     <td>
                                         <input type="hidden" class="form-control" name="akun_id[]" readonly
-                                            value="<?= $ak["id_biaya"];?>">
+                                            value="<?php echo $ak['id_biaya']; ?>">
                                         <input type="text" class="form-control" name="keterangan[]">
                                     </td>
                                     <td><input type="number" class="form-control" name="jumlah[]"></td>
                                     <td><input type="number" class="form-control grandpengeluaran" name="nilai[]"
                                             oninput="hitungTotalPengeluaran()"></td>
                                 </tr>
-                                <?php endforeach;?>
-                                <?php endif;?>
+                                <?php }?>
+                                <?php }?>
                                 <tfoot>
                                     <tr>
                                         <th colspan="5">Total Pengeluaran</th>
@@ -363,8 +363,8 @@ input[type=number] {
                 }
             }
             </script>
-            <?php elseif($olah == "edit"): ?>
-            <form action="<?= base_url("sales/sales_menu/edit_rs/").@$date."/". @$username["id"] ;?>" method="post">
+            <?php } elseif ($olah == 'edit') { ?>
+            <form action="<?php echo base_url('sales/sales_menu/edit_rs/').@$date.'/'.@$username['id']; ?>" method="post">
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">Persediaan</div>
@@ -383,35 +383,35 @@ input[type=number] {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php if($this->input->get('tanggal') != null):?>
+                                    <?php if ($this->input->get('tanggal') != null) { ?>
                                     <?php
                                     $no = 1;
-                                        foreach ($sediaan as $s):?>
-                                    <?php $barang = $this->db->get_where("barang_sediaan", ["id" => $s["sediaan_id"]])->row_array();?>
-                                    <?php $br = $this->db->get_where("master_barang", ["id" => $barang["barang_id"]])->row_array();?>
+                                        foreach ($sediaan as $s) { ?>
+                                    <?php $barang = $this->db->get_where('barang_sediaan', ['id' => $s['sediaan_id']])->row_array(); ?>
+                                    <?php $br = $this->db->get_where('master_barang', ['id' => $barang['barang_id']])->row_array(); ?>
                                     <tr>
-                                        <td><?= $no++;?></td>
-                                        <td><?= $br["kode_barang"];?></td>
-                                        <td><?= $br["nama_barang"];?></td>
+                                        <td><?php echo $no++; ?></td>
+                                        <td><?php echo $br['kode_barang']; ?></td>
+                                        <td><?php echo $br['nama_barang']; ?></td>
                                         <td width="15%">
-                                            <input type="hidden" value="<?= $s["id_sad"];?>" name="sediaan[]">
+                                            <input type="hidden" value="<?php echo $s['id_sad']; ?>" name="sediaan[]">
                                             <input type="number"
-                                                oninput="updateQtyAkhir(this.value, <?= $barang['id'] ?>)"
-                                                class="form-control" id="qty_awal<?= $barang["id"];?>" min="0"
-                                                name="qtyawl[]" value="<?= $s["qty_awal"];?>">
+                                                oninput="updateQtyAkhir(this.value, <?php echo $barang['id']; ?>)"
+                                                class="form-control" id="qty_awal<?php echo $barang['id']; ?>" min="0"
+                                                name="qtyawl[]" value="<?php echo $s['qty_awal']; ?>">
                                         </td>
                                         <td width="15%" class="text-end">
                                             <input type="number" class="form-control"
-                                                id="qty_pemakaian<?= $barang["id"] ?>" name="qtypki[]" readonly
-                                                value="<?= $s["qty_pemakaian"];?>">
+                                                id="qty_pemakaian<?php echo $barang['id']; ?>" name="qtypki[]" readonly
+                                                value="<?php echo $s['qty_pemakaian']; ?>">
                                         </td>
                                         <td width=" 15%" class="text-end">
-                                            <input type="number" class="form-control" id="qty_akhir<?= $barang["id"] ?>"
-                                                readonly value="<?= $s["qty_akhir"];?>">
+                                            <input type="number" class="form-control" id="qty_akhir<?php echo $barang['id']; ?>"
+                                                readonly value="<?php echo $s['qty_akhir']; ?>">
                                         </td>
                                     </tr>
-                                    <?php endforeach;?>
-                                    <?php endif;?>
+                                    <?php }?>
+                                    <?php }?>
                                 </tbody>
                             </table>
                         </div>
@@ -435,79 +435,79 @@ input[type=number] {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php if($this->input->get('tanggal') != null):?>
+                                    <?php if ($this->input->get('tanggal') != null) { ?>
                                     <?php
                                         $no = 1;
-                                        foreach ($penjualan as $pj):
-                                            $barang = $this->db->get_where("master_barang", ["id" => $pj["barang_id"]])->row_array();
+                                        foreach ($penjualan as $pj) {
+                                            $barang = $this->db->get_where('master_barang', ['id' => $pj['barang_id']])->row_array();
                                             ?>
-                                    <?php if($pj['sediaan_id'] > 0):?>
+                                    <?php if ($pj['sediaan_id'] > 0) { ?>
                                     <tr>
-                                        <td><?= $no++;?></td>
-                                        <td><?= $barang["kode_barang"];?></td>
-                                        <td><?= $barang["nama_barang"];?></td>
+                                        <td><?php echo $no++; ?></td>
+                                        <td><?php echo $barang['kode_barang']; ?></td>
+                                        <td><?php echo $barang['nama_barang']; ?></td>
                                         <td>
                                             <input type="hidden" name="barang_id[]" class="form-control"
-                                                value="<?= $pj["barang_id"]; ?>" readonly>
+                                                value="<?php echo $pj['barang_id']; ?>" readonly>
                                             <input type="number" name="qty_pemakaian[]"
-                                                value="<?= $pj["qty_pemakaian"];?>"
-                                                oninput="HitungPenjualan(this.value, <?= $no ?>); HitungSisaStok(<?= $pj['sediaan_id'] ?>);  HitungTotalPenjualan();"
-                                                class="form-control pemakaian<?= $pj['sediaan_id'] ?>" min="0">
+                                                value="<?php echo $pj['qty_pemakaian']; ?>"
+                                                oninput="HitungPenjualan(this.value, <?php echo $no; ?>); HitungSisaStok(<?php echo $pj['sediaan_id']; ?>);  HitungTotalPenjualan();"
+                                                class="form-control pemakaian<?php echo $pj['sediaan_id']; ?>" min="0">
                                         </td>
                                         <td class="text-end">
-                                            <input type="hidden" value="<?= $barang["harga"]; ?>" class="form-control"
-                                                id="harga<?= $no ?>" readonly>
-                                            <?= Uang($barang["harga"])?>
+                                            <input type="hidden" value="<?php echo $barang['harga']; ?>" class="form-control"
+                                                id="harga<?php echo $no; ?>" readonly>
+                                            <?php echo Uang($barang['harga']); ?>
                                         </td>
                                         <td class="text-end">
-                                            <input type="hidden" name="total[]" value="<?= $pj["total"];?>"
-                                                class="form-control grandpenjualan" readonly id="total<?= $no ?>">
-                                            <span id="total2<?= $no ?>"><?= Uang($pj["total"]);?></span>
+                                            <input type="hidden" name="total[]" value="<?php echo $pj['total']; ?>"
+                                                class="form-control grandpenjualan" readonly id="total<?php echo $no; ?>">
+                                            <span id="total2<?php echo $no; ?>"><?php echo Uang($pj['total']); ?></span>
                                         </td>
                                     </tr>
-                                    <?php else:?>
+                                    <?php } else { ?>
                                     <tr>
-                                        <?php $br = $this->db->get_where("sales_penjualan", ["barang_id" => $barang["id"]])->row_array(); ?>
-                                        <td><?= $no++;?></td>
-                                        <td><?= $barang["kode_barang"];?></td>
-                                        <td><?= $barang["nama_barang"];?></td>
+                                        <?php $br = $this->db->get_where('sales_penjualan', ['barang_id' => $barang['id']])->row_array(); ?>
+                                        <td><?php echo $no++; ?></td>
+                                        <td><?php echo $barang['kode_barang']; ?></td>
+                                        <td><?php echo $barang['nama_barang']; ?></td>
                                         <td>
                                             <input type="hidden" name="barang_id[]" class="form-control"
-                                                value="<?= $pj['barang_id'] ?>" readonly>
+                                                value="<?php echo $pj['barang_id']; ?>" readonly>
                                             <input type="number" name="qty_pemakaian[]"
-                                                value="<?= $pj["qty_pemakaian"];?>"
-                                                oninput="HitungPenjualan(this.value, <?= $no ?>);  HitungPaket(this.value, <?= $pj['id'] ?>); HitungSisaStok(<?= $br['sediaan2'];?>); HitungSisaStok(<?= $br['sediaan3'];?>); HitungSisaStok(<?= $br['sediaan4'];?>); HitungSisaStok(<?= $br['sediaan5'];?>); HitungSisaStok(<?= $br['sediaan6'];?>); HitungSisaStok(<?= $br['sediaan7'];?>); HitungTotalPenjualan();"
+                                                value="<?php echo $pj['qty_pemakaian']; ?>"
+                                                oninput="HitungPenjualan(this.value, <?php echo $no; ?>);  HitungPaket(this.value, <?php echo $pj['id']; ?>); HitungSisaStok(<?php echo $br['sediaan2']; ?>); HitungSisaStok(<?php echo $br['sediaan3']; ?>); HitungSisaStok(<?php echo $br['sediaan4']; ?>); HitungSisaStok(<?php echo $br['sediaan5']; ?>); HitungSisaStok(<?php echo $br['sediaan6']; ?>); HitungSisaStok(<?php echo $br['sediaan7']; ?>); HitungTotalPenjualan();"
                                                 class="form-control" min="0">
-                                            <?php for ($i = 2; $i <= 7; $i++): ?>
-                                            <?php if($br["sediaan{$i}"] > 0):?>
-                                            <input type="hidden" value="<?= $br["qty{$i}"];?>"
-                                                id="qtyp<?= $i . $pj['id'] ?>">
-                                            <input type="hidden" class="pemakaian<?= $br["sediaan{$i}"]?>"
-                                                id="sediaanp<?= $i . $pj['id'] ?>"
-                                                value="<?= $pj["qty_pemakaian"] * $br["qty{$i}"];?>">
-                                            <?php endif;?>
-                                            <?php endfor; ?>
+                                            <?php for ($i = 2; $i <= 7; ++$i) { ?>
+                                            <?php if ($br["sediaan{$i}"] > 0) { ?>
+                                            <input type="hidden" value="<?php echo $br["qty{$i}"]; ?>"
+                                                id="qtyp<?php echo $i.$pj['id']; ?>">
+                                            <input type="hidden" class="pemakaian<?php echo $br["sediaan{$i}"]; ?>"
+                                                id="sediaanp<?php echo $i.$pj['id']; ?>"
+                                                value="<?php echo $pj['qty_pemakaian'] * $br["qty{$i}"]; ?>">
+                                            <?php }?>
+                                            <?php } ?>
                                         </td>
                                         <td class="text-end">
-                                            <input type="hidden" value="<?= $barang["harga"]; ?>" class="form-control"
-                                                id="harga<?= $no ?>" readonly>
-                                            <?= Uang($barang["harga"])?>
+                                            <input type="hidden" value="<?php echo $barang['harga']; ?>" class="form-control"
+                                                id="harga<?php echo $no; ?>" readonly>
+                                            <?php echo Uang($barang['harga']); ?>
                                         </td>
                                         <td class="text-end">
-                                            <input type="hidden" name="total[]" value="<?= $pj["total"];?>"
-                                                class="form-control grandpenjualan" readonly id="total<?= $no ?>">
-                                            <span id="total2<?= $no ?>"><?= Uang($pj["total"]);?></span>
+                                            <input type="hidden" name="total[]" value="<?php echo $pj['total']; ?>"
+                                                class="form-control grandpenjualan" readonly id="total<?php echo $no; ?>">
+                                            <span id="total2<?php echo $no; ?>"><?php echo Uang($pj['total']); ?></span>
                                         </td>
                                     </tr>
-                                    <?php endif;?>
-                                    <?php endforeach;?>
-                                    <?php endif;?>
+                                    <?php }?>
+                                    <?php }?>
+                                    <?php }?>
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th colspan="5">Total Penjualan</th>
                                         <th width="20%" class="text-end" id="totalpenjualan2">
-                                            <?= Uang($totalpenjualan);?></th>
+                                            <?php echo Uang($totalpenjualan); ?></th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -531,36 +531,36 @@ input[type=number] {
                                         <th width="20%">Nilai</th>
                                     </tr>
                                 </thead>
-                                <?php if($this->input->get('tanggal') != null):?>
+                                <?php if ($this->input->get('tanggal') != null) { ?>
                                 <?php
                                             $no = 1;
-                                    foreach ($pengeluaran as $ak):
-                                        $akun = $this->db->get_where("master_biaya", ["id_biaya" => $ak["akun_id"]])->row_array();
+                                    foreach ($pengeluaran as $ak) {
+                                        $akun = $this->db->get_where('master_biaya', ['id_biaya' => $ak['akun_id']])->row_array();
                                         ?>
                                 <tr>
-                                    <td><?= $no++;?></td>
-                                    <td><?= $akun["kode_biaya"];?></td>
-                                    <td><?= $akun["nama_biaya"];?></td>
+                                    <td><?php echo $no++; ?></td>
+                                    <td><?php echo $akun['kode_biaya']; ?></td>
+                                    <td><?php echo $akun['nama_biaya']; ?></td>
                                     <td>
                                         <input type="hidden" class="form-control" name="akun_id[]" readonly
-                                            value="<?= $ak["id_pengeluaran"];?>">
+                                            value="<?php echo $ak['id_pengeluaran']; ?>">
                                         <input type="text" class="form-control" name="keterangan[]"
-                                            value="<?= $ak["keterangan"];?>">
+                                            value="<?php echo $ak['keterangan']; ?>">
                                     </td>
                                     <td>
                                         <input type="text" class="form-control" name="jumlah[]"
-                                            value="<?= $ak["jumlah"];?>">
+                                            value="<?php echo $ak['jumlah']; ?>">
                                     </td>
                                     <td><input type="number" class="form-control grandpengeluaran" name="nilai[]"
-                                            oninput="hitungTotalPengeluaran()" value="<?= $ak["nilai"];?>"></td>
+                                            oninput="hitungTotalPengeluaran()" value="<?php echo $ak['nilai']; ?>"></td>
                                 </tr>
-                                <?php endforeach;?>
-                                <?php endif;?>
+                                <?php }?>
+                                <?php }?>
                                 <tfoot>
                                     <tr>
                                         <th colspan="5">Total Pengeluaran</th>
                                         <th width="20%" class="text-end" id="totalpengeluaran">
-                                            <?= Uang($totalpengeluaran);?></th>
+                                            <?php echo Uang($totalpengeluaran); ?></th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -575,22 +575,22 @@ input[type=number] {
                                     <tr>
                                         <td>Total Penjualan</td>
                                         <td width="20%" class="text-end" id="totalpenjualanakhir">
-                                            <?= Uang($totalpenjualan);?></td>
-                                        <input type="hidden" id="totalpenjualanakhir2" value="<?= $totalpenjualan;?>">
+                                            <?php echo Uang($totalpenjualan); ?></td>
+                                        <input type="hidden" id="totalpenjualanakhir2" value="<?php echo $totalpenjualan; ?>">
                                     </tr>
                                     <tr>
                                         <td>Total Biaya</td>
                                         <td width="20%" class="text-end" id="totalpengeluaranakhir">
-                                            <?= Uang($totalpengeluaran);?></td>
+                                            <?php echo Uang($totalpengeluaran); ?></td>
                                         <input type="hidden" id="totalpengeluaranakhir2"
-                                            value="<?= $totalpengeluaran;?>">
+                                            value="<?php echo $totalpengeluaran; ?>">
                                     </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th>Uang di Terima</th>
                                         <th width="20%" class="text-end" id="uangditerima">
-                                            <?= Uang($totalpenjualan - $totalpengeluaran);?></th>
+                                            <?php echo Uang($totalpenjualan - $totalpengeluaran); ?></th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -598,17 +598,17 @@ input[type=number] {
                     </div>
                 </div>
                 <?php
-                    $cek = $this->db->get_where("sales_laporan", ["tanggal" => $date, "user_id" => $username["id"], "status" => 1])->num_rows();
-                        if($cek > 0):
-                            ?>
+                    $cek = $this->db->get_where('sales_laporan', ['tanggal' => $date, 'user_id' => $username['id'], 'status' => 1])->num_rows();
+                if ($cek > 0) {
+                    ?>
                 <div class="form-group">
-                    <a class="btn btn-primary" href="<?= base_url("sales/sales_menu");?>">Kembali</a>
+                    <a class="btn btn-primary" href="<?php echo base_url('sales/sales_menu'); ?>">Kembali</a>
                 </div>
-                <?php else:?>
+                <?php } else { ?>
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit">Edit</button>
                 </div>
-                <?php endif;?>
+                <?php }?>
             </form>
             <script>
             function updateQtyAkhir(value, counter) {
@@ -679,7 +679,7 @@ input[type=number] {
                 $('#uangditerima').text(FormatRupiah(totalPengurangan));
             }
             </script>
-            <?php endif;?>
+            <?php }?>
         </div>
     </div>
 </div>

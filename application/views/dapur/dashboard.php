@@ -1,28 +1,28 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <?= $this->session->flashdata('pesan'); ?>
+            <?php echo $this->session->flashdata('pesan'); ?>
         </div>
-        <?php if($nickname["dapur"] == 0): ?>
+        <?php if ($nickname['dapur'] == 0) { ?>
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <div class="text-center">History Pengeluaran Dapur Periode <?= TglIndo($year."-".$month."-");?>
+                        <div class="text-center">History Pengeluaran Dapur Periode <?php echo TglIndo($year.'-'.$month.'-'); ?>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="<?= base_url("dapur/dashboard/cari");?>" method="post">
+                    <form action="<?php echo base_url('dapur/dashboard/cari'); ?>" method="post">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group mb-2">
                                     <label for="bulan" class="form-label">Bulan</label>
                                     <select name="bulan" class="form-control" id="bulan" required>
                                         <option value="">Pilih Bulan ...</option>
-                                        <?php foreach($bulan as $b):?>
-                                        <option value="<?= $b["no"];?>"><?= $b["nama"];?></option>
-                                        <?php  endforeach;?>
+                                        <?php foreach ($bulan as $b) { ?>
+                                        <option value="<?php echo $b['no']; ?>"><?php echo $b['nama']; ?></option>
+                                        <?php }?>
                                     </select>
                                 </div>
                             </div>
@@ -31,9 +31,9 @@
                                     <label for="tahun" class="form-label">Tahun</label>
                                     <select name="tahun" class="form-control" required>
                                         <option value="">Pilih Tahun ...</option>
-                                        <?php foreach($tahun as $t):?>
-                                        <option value="<?= $t;?>"><?= $t;?></option>
-                                        <?php  endforeach;?>
+                                        <?php foreach ($tahun as $t) { ?>
+                                        <option value="<?php echo $t; ?>"><?php echo $t; ?></option>
+                                        <?php }?>
                                     </select>
                                 </div>
                             </div>
@@ -71,43 +71,43 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php  
+                                <?php
                                     $no = 1;
-                                    foreach ($dapur as $dp):?>
+            foreach ($dapur as $dp) { ?>
                                 <tr>
-                                    <td><?= $no++;?></td>
-                                    <td><?= $dp["no_dok"];?></td>
-                                    <td><?= Tglindo($dp["tanggal"]);?></td>
-                                    <?php $userdp = $this->db->get_where("master_user", ["id" => $dp["user_id"]])->row_array();?>
-                                    <?php if($dp["rolling"] >= 1):?>
-                                    <td><?= getUser($dp["rolling"]);?></td>
-                                    <?php else:?>
-                                    <td><?= $userdp["nama"];?></td>
-                                    <?php endif;?>
-                                    <td class="text-end"><?= Uang($dp["total_nilai"]);?></td>
-                                    <td class="text-end"><?= Uang(getTotalPembelian($dp["no_dok"]));?></td>
+                                    <td><?php echo $no++; ?></td>
+                                    <td><?php echo $dp['no_dok']; ?></td>
+                                    <td><?php echo Tglindo($dp['tanggal']); ?></td>
+                                    <?php $userdp = $this->db->get_where('master_user', ['id' => $dp['user_id']])->row_array(); ?>
+                                    <?php if ($dp['rolling'] >= 1) { ?>
+                                    <td><?php echo getUser($dp['rolling']); ?></td>
+                                    <?php } else { ?>
+                                    <td><?php echo $userdp['nama']; ?></td>
+                                    <?php }?>
+                                    <td class="text-end"><?php echo Uang($dp['total_nilai']); ?></td>
+                                    <td class="text-end"><?php echo Uang(getTotalPembelian($dp['no_dok'])); ?></td>
                                     <td class="text-end">
-                                        <?= Uang($dp["total_nilai"] + getTotalPembelian($dp["no_dok"])) ;?>
+                                        <?php echo Uang($dp['total_nilai'] + getTotalPembelian($dp['no_dok'])); ?>
                                     </td>
                                     <td>
-                                        <?php if($dp["status"] == 0):?>
+                                        <?php if ($dp['status'] == 0) { ?>
                                         <div class="badge bg-danger">Belum</div>
-                                        <?php else:?>
+                                        <?php } else { ?>
                                         <div class="badge bg-success">Cek</div>
-                                        <?php endif;?>
+                                        <?php }?>
                                     </td>
                                     <td>
-                                        <a href="<?= base_url("dapur/dapur_menu?tanggal=").$dp["tanggal"]."&trx=".$dp["transaksi"];?>"
+                                        <a href="<?php echo base_url('dapur/dapur_menu?tanggal=').$dp['tanggal'].'&trx='.$dp['transaksi']; ?>"
                                             class="btn btn-warning btn-sm"><i class="bx bx-edit"></i></a>
-                                        <?php if($dp["status"] == 0):?>
+                                        <?php if ($dp['status'] == 0) { ?>
                                         <a type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#hapus<?= $dp["no_dok"];?>"><i class="bx bx-trash"></i></a>
-                                        <div class="modal fade" id="hapus<?= $dp["no_dok"];?>" tabindex="-1"
+                                            data-bs-target="#hapus<?php echo $dp['no_dok']; ?>"><i class="bx bx-trash"></i></a>
+                                        <div class="modal fade" id="hapus<?php echo $dp['no_dok']; ?>" tabindex="-1"
                                             aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <form
-                                                        action="<?= base_url("dapur/dashboard/hapus/").$dp["no_dok"];?>"
+                                                        action="<?php echo base_url('dapur/dashboard/hapus/').$dp['no_dok']; ?>"
                                                         method="post">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="modal-title">Hapus Data</h5>
@@ -119,25 +119,25 @@
                                                                 <label for="no_dok" class="form-label">No
                                                                     Dokumentasi</label>
                                                                 <input type="text" class="form-control" name="no_dok"
-                                                                    id="no_dok" value="<?= $dp["no_dok"];?>" readonly>
+                                                                    id="no_dok" value="<?php echo $dp['no_dok']; ?>" readonly>
                                                             </div>
                                                             <div class="form-group mb-2">
                                                                 <label for="tanggal" class="form-label">Tanggal</label>
                                                                 <input type="text" class="form-control" name="tanggal"
-                                                                    id="tanggal" value="<?= Tglindo($dp["tanggal"]);?>"
+                                                                    id="tanggal" value="<?php echo Tglindo($dp['tanggal']); ?>"
                                                                     readonly>
                                                             </div>
                                                             <div class="form-group mb-2">
                                                                 <label for="username" class="form-label">Dapur</label>
                                                                 <input type="text" class="form-control" name="username"
-                                                                    id="username" value="<?= $userdp["username"];?>"
+                                                                    id="username" value="<?php echo $userdp['username']; ?>"
                                                                     readonly>
                                                             </div>
                                                             <div class="form-group mb-2">
                                                                 <label for="tanggal" class="form-label">Total</label>
                                                                 <input type="text" class="form-control" name="tanggal"
                                                                     id="tanggal"
-                                                                    value="<?= Uang($dp["total_nilai"] + getTotalPembelian($dp["tanggal"], $dp["user_id"]));?>"
+                                                                    value="<?php echo Uang($dp['total_nilai'] + getTotalPembelian($dp['tanggal'], $dp['user_id'])); ?>"
                                                                     readonly>
                                                             </div>
                                                         </div>
@@ -150,17 +150,17 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php endif;?>
+                                        <?php }?>
                                     </td>
 
                                 </tr>
-                                <?php endforeach;?>
+                                <?php }?>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-        <?php endif;?>
+        <?php }?>
     </div>
 </div>
